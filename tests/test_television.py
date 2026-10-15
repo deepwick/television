@@ -125,3 +125,13 @@ def test_tv_renders_deepwick(tmp_path):
 
 def test_port_conventions():
     assert check_port(REPO, PALETTE.allowed_hex()) == []
+
+
+@pytest.mark.skipif(not (tmux_available() and shutil.which("tv") and shutil.which("fd")), reason="requires tmux, tv and fd")
+@pytest.mark.parametrize("key,word,bg", [("C-t", "REMOTE", "teal"), ("C-x", "ACTIONS", "magenta")])
+def test_tv_mode_badges(tmp_path, key, word, bg):
+    tree = make_tree(tmp_path / "tree")
+    out = capture(f"cd {tree} && tv files", tv_env(tmp_path), size=(120, 30), wait_for="run.sh",
+                  keys=(key,), after=word, timeout=20)
+    badge = style_containing(out, word)
+    assert (badge["fg"], badge["bg"]) == (C["background"].lower(), C[bg].lower())
