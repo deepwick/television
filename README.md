@@ -45,7 +45,7 @@ cp cable/files.toml ~/.config/television/cable/
 - tv themes have no bold or italic.
 - An unknown theme name falls back to tv's default without a warning.
 
-Tested with television 0.15.8.
+Tested with television 0.15.9.
 
 ## License
 
